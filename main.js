@@ -3,6 +3,9 @@ const categoriesPage = document.querySelector(".categories");
 const categories = document.querySelector(".categories");
 const dishes = document.querySelector(".dishes");
 const recipe = document.querySelector(".recipe");
+const headerForm = document.querySelector(".header__form");
+const search = document.querySelector(".search");
+const headerInput = document.querySelector(".header__input");
 
 
 const getCategories = async () => {
@@ -34,7 +37,19 @@ const getRecipeByDishesID = async (dishID) => {
         const data = await res.json();
 
         return data;
-        } catch (error) {
+    } catch (error) {
+            console.log(error);
+        }
+}
+
+const getItem = async (dish) => {
+    try {
+        const res = await fetch(`${SERVER_URL}/api/json/v1/1/search.php?s=${dish}`);
+        
+        const data = await res.json();
+
+        return data;
+    } catch (error) {
             console.log(error);
         }
 }
@@ -111,6 +126,31 @@ const ShowRecipe = async (dish) => {
     })
 }
 
+const insertSearchDishes = async (items) => {
+    search.innerHTML = "";
+
+    categoriesPage.classList.add("hide");
+    dishes.classList.add("hide");
+    recipe.classList.add("hide");
+    search.classList.remove("hide");
+
+    search.insertAdjacentHTML("beforeend", `
+        <div class="search__items">
+                    
+            </div>
+        `)
+
+    const searchItems = document.querySelector(".search__items");
+
+    items.forEach((items) => {
+        searchItems.insertAdjacentHTML("beforeend", `
+            <div class="search__card" data-product-id=${items.idMeal}>
+                <img class="search__card-img" src="${items.strMealThumb}" alt="${items.strMeal}">
+                <h3 class="search__card-title">${items.strMeal}</h3>
+            </div>`)
+    })
+}
+
 
 
 const handleSelectCategory = async (e) => {
@@ -132,10 +172,31 @@ const handleSelectRecipe = async (e) => {
         console.log(dish);
         
         ShowRecipe(dish.meals[0]);
-    }
+    }//mesage!!!!!!!!!1 todo getRecipeByDishesID(dishID); можно не создавать нужно создать 
+    //только handleSelectRecipe внизу обработчик событие на searc.ad/ и ShowRecipe(dish.meals[0]); Поиск!
+    //можно передавать другие аргументы
+}
+
+const searchDish = async (event) => {
+    event.preventDefault()
+    const inputValue = headerInput.value;
+    const dishes = await getItem(inputValue);
+    console.log(dishes.meals);
+    insertSearchDishes(dishes.meals);
+    search.insertAdjacentHTML("afterbegin", `
+            <div class="search__message">
+                <h3 class="search__message-text">Your search for "${inputValue}" found:</h3>
+            </div>
+            `)
 }
 
 
 init()
+
 categories.addEventListener("click", handleSelectCategory);
+
 dishes.addEventListener("click", handleSelectRecipe);
+
+// search.addEventListener("click", );
+
+headerForm.addEventListener("submit", searchDish);
