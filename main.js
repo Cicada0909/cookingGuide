@@ -11,6 +11,8 @@ const random = document.querySelector(".random");
 const btnRandom = document.querySelector(".btn-random");
 const menuBtn = document.querySelector(".menu-btn");
 const headerNavigation = document.querySelector(".header-navigation");
+const headerLogo = document.querySelector(".header__logo");
+const btnBackWrapper = document.querySelector(".btn-back-wrapper");
 
 
 const getCategories = async () => {
@@ -94,6 +96,14 @@ const insertDishesCards = async (meals) => {
                 <h3 class="dishes__card-title">${meals.strMeal}</h3>
             </div>`)
     })
+
+    btnBackWrapper.innerHTML = "";
+
+    btnBackWrapper.insertAdjacentHTML("beforeend", `
+        <button class="back-btn">back</button>
+    `)
+
+    btnBackWrapper.addEventListener("click", backToMenu);
 }
 
 const ShowRecipe = async (dish) => {
@@ -362,6 +372,8 @@ headerForm.addEventListener("submit", searchDish);
 btnRandom.addEventListener("click", handleHeaderButtonClick);
 
 menuBtn.addEventListener("click", backToMenu);
+
+headerLogo.addEventListener("click", backToMenu);
 
 // document.body.addEventListener("click", (event) => {
 //     if (event.target.matches(".btn-random")) {
