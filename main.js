@@ -9,6 +9,8 @@ const headerInput = document.querySelector(".header__input");
 const searchShow = document.querySelector(".search-show");
 const random = document.querySelector(".random");
 const btnRandom = document.querySelector(".btn-random");
+const menuBtn = document.querySelector(".menu-btn");
+const headerNavigation = document.querySelector(".header-navigation");
 
 
 const getCategories = async () => {
@@ -328,7 +330,26 @@ const searchDish = async (event) => {
             `)
 }
 
+const backToMenu = () => {
+    categoriesPage.classList.remove("hide");
+    dishes.classList.add("hide");
+    recipe.classList.add("hide");
+    search.classList.add("hide");
+    searchShow.classList.add("hide");
+    random.classList.add("hide");
+}
+
+const observeCategories = () => {
+    const observer = new MutationObserver(() => {
+        headerNavigation.classList.toggle("hide", !categories.classList.contains("hide"));
+    });
+
+    observer.observe(categories, { attributes: true, attributeFilter: ["class"] });
+};
+
 init()
+
+observeCategories();
 
 categories.addEventListener("click", handleSelectCategory);
 
@@ -339,6 +360,8 @@ search.addEventListener("click", handleSelectRecipeSearching);
 headerForm.addEventListener("submit", searchDish);
 
 btnRandom.addEventListener("click", handleHeaderButtonClick);
+
+menuBtn.addEventListener("click", backToMenu);
 
 // document.body.addEventListener("click", (event) => {
 //     if (event.target.matches(".btn-random")) {
