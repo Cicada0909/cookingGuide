@@ -6,6 +6,7 @@ const recipe = document.querySelector(".recipe");
 const headerForm = document.querySelector(".header__form");
 const search = document.querySelector(".search");
 const headerInput = document.querySelector(".header__input");
+const searchShow = document.querySelector(".search-show");
 
 
 const getCategories = async () => {
@@ -151,6 +152,57 @@ const insertSearchDishes = async (items) => {
     })
 }
 
+const ShowRecipeSearching = async (dish) => {
+    categoriesPage.classList.add("hide");
+    dishes.classList.add("hide");
+    recipe.classList.add("hide");
+    search.classList.add("hide");
+    searchShow.classList.remove("hide");
+
+    searchShow.innerHTML = "";
+
+    searchShow.insertAdjacentHTML("beforeend", `
+        <div class="recipe__content">
+                <img src="${dish.strMealThumb}" alt="${dish.strMeal}" class="recipe__img">
+                <div class="recipe_details">
+                    <h3 class="recipe__title">${dish.strMeal}</h3>
+                    <div class="recipe__ingredients">
+                        <ul class="recipe__ingredients-name"></ul>
+                        <ul class="recipe__ingredients-measure"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="recipe__instructions">
+                <h3 class="recipe__instructions-title">Instructions</h3>
+                <p class="recipe__instructions-text">${dish.strInstructions}</p>
+            </div>
+            <div class="recipe__video">
+                <iframe class ="recipe__youtube" src="https://www.youtube.com/embed/${dish.strYoutube.split('v=')[1]}" frameborder="0"></iframe>
+            </div>
+    `);
+
+    const recipeIngredientsName = document.querySelector(".recipe__ingredients-name");
+    const recipeIngredientsMeasure = document.querySelector(".recipe__ingredients-measure");
+
+    let ingredients = [];
+
+    for (let i = 1; i <= 20; i++) {
+        const ingredient = dish[`strIngredient${i}`];
+        const measure = dish[`strMeasure${i}`];
+    
+        if (ingredient && measure) {
+            ingredients.push({ingredient, measure});
+        }
+    }
+
+    ingredients.forEach((ingredient) => {
+        recipeIngredientsName.insertAdjacentHTML("beforeend", `
+            <li>${ingredient.ingredient}</li>`)
+        recipeIngredientsMeasure.insertAdjacentHTML("beforeend", `
+            <li>${ingredient.measure}</li>`)
+    })
+}
+
 
 
 const handleSelectCategory = async (e) => {
@@ -169,17 +221,29 @@ const handleSelectRecipe = async (e) => {
     if (card) {
         const dishID = card.dataset.productId;
         const dish = await getRecipeByDishesID(dishID);
-        console.log(dish);
         
+        window.scrollTo(0, 0);
         ShowRecipe(dish.meals[0]);
-    }//mesage!!!!!!!!!1 todo getRecipeByDishesID(dishID); можно не создавать нужно создать 
-    //только handleSelectRecipe внизу обработчик событие на searc.ad/ и ShowRecipe(dish.meals[0]); Поиск!
-    //можно передавать другие аргументы
+    }
+}
+
+const handleSelectRecipeSearching = async (e) => {
+    const card = e.target.closest(".search__card");
+    if (card) {
+        const dishID = card.dataset.productId;
+        const dish = await getRecipeByDishesID(dishID);
+        
+        window.scrollTo(0, 0);
+        ShowRecipeSearching(dish.meals[0]);
+    }
 }
 
 const searchDish = async (event) => {
     event.preventDefault()
     const inputValue = headerInput.value;
+    if (inputValue == "") {
+        return
+    }
     const dishes = await getItem(inputValue);
     console.log(dishes.meals);
     insertSearchDishes(dishes.meals);
@@ -197,6 +261,6 @@ categories.addEventListener("click", handleSelectCategory);
 
 dishes.addEventListener("click", handleSelectRecipe);
 
-// search.addEventListener("click", );
+search.addEventListener("click", handleSelectRecipeSearching);
 
 headerForm.addEventListener("submit", searchDish);

@@ -282,7 +282,18 @@ body {
     padding: 4px 18px 0px 18px;
     border-radius: 15px;
     margin-bottom: 20px;
-}   
+} 
+
+.search-show {
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+    background-color: rgba(94, 94, 94, 0.778);
+    color: #fff;
+    padding: 40px;
+    border-radius: 30px;
+    margin-bottom: 30px;
+}
 
 
 
