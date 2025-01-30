@@ -64,16 +64,17 @@ body {
     color: #fd7d4c;
 }
 
-.header__button {
+.header__button, .menu-btn, .back-btn {
     border: 2px solid #fff;
     padding: 10px 20px;
     font-size: 20px;
     background-color: #292929f8;
     border-radius: 30px;
     transition: .3s;
+    color: #fd7d4c;
 }
 
-.header__button:hover {
+.header__button:hover, .menu-btn:hover, .back-btn:hover {
     background-color: #5d5d5d;
     transform: scale(1.05);
 }
