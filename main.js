@@ -7,6 +7,8 @@ const headerForm = document.querySelector(".header__form");
 const search = document.querySelector(".search");
 const headerInput = document.querySelector(".header__input");
 const searchShow = document.querySelector(".search-show");
+const random = document.querySelector(".random");
+const btnRandom = document.querySelector(".btn-random");
 
 
 const getCategories = async () => {
@@ -46,6 +48,18 @@ const getRecipeByDishesID = async (dishID) => {
 const getItem = async (dish) => {
     try {
         const res = await fetch(`${SERVER_URL}/api/json/v1/1/search.php?s=${dish}`);
+        
+        const data = await res.json();
+
+        return data;
+    } catch (error) {
+            console.log(error);
+        }
+}
+
+const getRandomRecipe = async (dish) => {
+    try {
+        const res = await fetch(`${SERVER_URL}/api/json/v1/1/random.php`);
         
         const data = await res.json();
 
@@ -167,8 +181,8 @@ const ShowRecipeSearching = async (dish) => {
                 <div class="recipe_details">
                     <h3 class="recipe__title">${dish.strMeal}</h3>
                     <div class="recipe__ingredients">
-                        <ul class="recipe__ingredients-name"></ul>
-                        <ul class="recipe__ingredients-measure"></ul>
+                        <ul class="recipe__ingredients-name-searching"></ul>
+                        <ul class="recipe__ingredients-measure-searching"></ul>
                     </div>
                 </div>
             </div>
@@ -181,8 +195,8 @@ const ShowRecipeSearching = async (dish) => {
             </div>
     `);
 
-    const recipeIngredientsName = document.querySelector(".recipe__ingredients-name");
-    const recipeIngredientsMeasure = document.querySelector(".recipe__ingredients-measure");
+    const recipeIngredientsNameSearching = document.querySelector(".recipe__ingredients-name-searching");
+    const recipeIngredientsMeasureSearching = document.querySelector(".recipe__ingredients-measure-searching");
 
     let ingredients = [];
 
@@ -196,9 +210,61 @@ const ShowRecipeSearching = async (dish) => {
     }
 
     ingredients.forEach((ingredient) => {
-        recipeIngredientsName.insertAdjacentHTML("beforeend", `
+        recipeIngredientsNameSearching.insertAdjacentHTML("beforeend", `
             <li>${ingredient.ingredient}</li>`)
-        recipeIngredientsMeasure.insertAdjacentHTML("beforeend", `
+        recipeIngredientsMeasureSearching.insertAdjacentHTML("beforeend", `
+            <li>${ingredient.measure}</li>`)
+    })
+}
+
+const ShowRandomRecipe = async (dish) => {
+    categoriesPage.classList.add("hide");
+    dishes.classList.add("hide");
+    recipe.classList.add("hide");
+    search.classList.add("hide");
+    searchShow.classList.add("hide");
+    random.classList.remove("hide");
+
+    random.innerHTML = "";
+
+    random.insertAdjacentHTML("beforeend", `
+        <div class="recipe__content">
+                <img src="${dish.strMealThumb}" alt="${dish.strMeal}" class="recipe__img">
+                <div class="recipe_details">
+                    <h3 class="recipe__title">${dish.strMeal}</h3>
+                    <div class="recipe__ingredients">
+                        <ul class="recipe__ingredients-name-random"></ul>
+                        <ul class="recipe__ingredients-measure-random"></ul>
+                    </div>
+                </div>
+            </div>
+            <div class="recipe__instructions">
+                <h3 class="recipe__instructions-title">Instructions</h3>
+                <p class="recipe__instructions-text">${dish.strInstructions}</p>
+            </div>
+            <div class="recipe__video">
+                <iframe class ="recipe__youtube" src="https://www.youtube.com/embed/${dish.strYoutube.split('v=')[1]}" frameborder="0"></iframe>
+            </div>
+    `);
+
+    const recipeIngredientsNameRandom = document.querySelector(".recipe__ingredients-name-random");
+    const recipeIngredientsMeasureRandom = document.querySelector(".recipe__ingredients-measure-random");
+
+    let ingredients = [];
+
+    for (let i = 1; i <= 20; i++) {
+        const ingredient = dish[`strIngredient${i}`];
+        const measure = dish[`strMeasure${i}`];
+    
+        if (ingredient && measure) {
+            ingredients.push({ingredient, measure});
+        }
+    }
+
+    ingredients.forEach((ingredient) => {
+        recipeIngredientsNameRandom.insertAdjacentHTML("beforeend", `
+            <li>${ingredient.ingredient}</li>`)
+            recipeIngredientsMeasureRandom.insertAdjacentHTML("beforeend", `
             <li>${ingredient.measure}</li>`)
     })
 }
@@ -238,6 +304,14 @@ const handleSelectRecipeSearching = async (e) => {
     }
 }
 
+const handleHeaderButtonClick = async () => {
+
+    const randomDish = await getRandomRecipe();
+
+    ShowRandomRecipe(randomDish.meals[0])
+    
+}
+
 const searchDish = async (event) => {
     event.preventDefault()
     const inputValue = headerInput.value;
@@ -254,7 +328,6 @@ const searchDish = async (event) => {
             `)
 }
 
-
 init()
 
 categories.addEventListener("click", handleSelectCategory);
@@ -264,3 +337,11 @@ dishes.addEventListener("click", handleSelectRecipe);
 search.addEventListener("click", handleSelectRecipeSearching);
 
 headerForm.addEventListener("submit", searchDish);
+
+btnRandom.addEventListener("click", handleHeaderButtonClick);
+
+// document.body.addEventListener("click", (event) => {
+//     if (event.target.matches(".btn-random")) {
+//         handleHeaderButtonClick();
+//     }
+// });

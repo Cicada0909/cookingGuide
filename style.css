@@ -214,6 +214,7 @@ body {
     background-color: #fd7d4c;
     padding: 4px 18px 0px 18px;
     border-radius: 10px;
+    text-align: center;
 }
 
 .recipe__ingredients {
@@ -284,7 +285,7 @@ body {
     margin-bottom: 20px;
 } 
 
-.search-show {
+.search-show, .random {
     display: flex;
     flex-direction: column;
     gap: 70px;
@@ -294,6 +295,12 @@ body {
     border-radius: 30px;
     margin-bottom: 30px;
 }
+
+
+.recipe__instructions-text {
+    padding: 0 56px;
+}
+
 
 
 
