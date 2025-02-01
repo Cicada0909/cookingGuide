@@ -86,18 +86,22 @@ const init = async () => {
 }
 
 const backToMenu = () => {
+    if (!categoriesPage.classList.contains('hide')) {
+        return;
+    }
     headerNavigation.classList.remove("JC-flexstart");
     categoriesPage.classList.remove("hide");
-    dishes.classList.add("hide");
-    recipe.classList.add("hide");
-    search.classList.add("hide");
-    searchShow.classList.add("hide");
-    random.classList.add("hide");
+    
+    changePage(dishes, categoriesPage);
+    changePage(recipe, categoriesPage);
+    changePage(search, categoriesPage);
+    changePage(searchShow, categoriesPage);
+    changePage(random, categoriesPage);
 }
 
 const BackToSearching = () => {
-    search.classList.remove("hide");
-    searchShow.classList.add("hide");
+    changePage(searchShow, search);
+
     btnBackWrapper.innerHTML = "";
 }
 
@@ -113,9 +117,8 @@ const insertBtnBackToMenu = () => {
 }
 
 const backToDishesCards = () => {
-    recipe.classList.add("hide");
-    dishes.classList.remove("hide");
-    categoriesPage.classList.add("hide");
+    changePage(recipe, dishes);
+    
     btnBackWrapper.removeEventListener("click", backToDishesCards);
     
     insertBtnBackToMenu()
@@ -132,9 +135,21 @@ const insertBtnBackToSearching = () => {
     btnBackWrapper.addEventListener("click", BackToSearching);
 }
 
+
+const changePage = (from, to) => {
+    from.style.opacity = "0";
+    to.style.opacity = "0";
+    to.classList.remove("hide");
+
+    setTimeout(() => {
+        from.classList.add("hide");
+        to.style.opacity = "1";
+    }, 400);
+}
+
 const insertDishesCards = async (meals) => {
-    categoriesPage.classList.add("hide");
-    dishes.classList.remove("hide");
+    
+    changePage(categoriesPage, dishes);
 
     dishes.innerHTML = "";
 
@@ -150,9 +165,7 @@ const insertDishesCards = async (meals) => {
 }
 
 const ShowRecipe = async (dish) => {
-    categoriesPage.classList.add("hide");
-    dishes.classList.add("hide");
-    recipe.classList.remove("hide");
+    changePage(dishes, recipe);
 
     recipe.innerHTML = "";
     btnBackWrapper.innerHTML = "";
@@ -211,10 +224,11 @@ const ShowRecipe = async (dish) => {
 const insertSearchDishes = async (items) => {
     search.innerHTML = "";
 
-    categoriesPage.classList.add("hide");
-    dishes.classList.add("hide");
-    recipe.classList.add("hide");
-    search.classList.remove("hide");
+    changePage(categoriesPage, search);
+    changePage(dishes, search);
+    changePage(recipe, search);
+    changePage(searchShow, search);
+    changePage(random, search);
 
     search.insertAdjacentHTML("beforeend", `
         <div class="search__items">
@@ -234,11 +248,7 @@ const insertSearchDishes = async (items) => {
 }
 
 const ShowRecipeSearching = async (dish) => {
-    categoriesPage.classList.add("hide");
-    dishes.classList.add("hide");
-    recipe.classList.add("hide");
-    search.classList.add("hide");
-    searchShow.classList.remove("hide");
+    changePage(search, searchShow);
 
     searchShow.innerHTML = "";
 
@@ -287,12 +297,12 @@ const ShowRecipeSearching = async (dish) => {
 }
 
 const ShowRandomRecipe = async (dish) => {
-    categoriesPage.classList.add("hide");
-    dishes.classList.add("hide");
-    recipe.classList.add("hide");
-    search.classList.add("hide");
-    searchShow.classList.add("hide");
-    random.classList.remove("hide");
+    changePage(dishes, random);
+    changePage(recipe, random);
+    changePage(search, random);
+    changePage(searchShow, random);
+    changePage(categoriesPage, random);
+
     headerNavigation.classList.add("JC-flexstart");
 
     btnBackWrapper.innerHTML = "";

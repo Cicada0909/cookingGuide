@@ -355,6 +355,10 @@ html {
     color: #fff;
 }
 
+.categories, .dishes, .recipe, .search, .search-show, .random {
+    transition: 0.4s;
+}
+
 
 
 
