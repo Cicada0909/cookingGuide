@@ -130,7 +130,6 @@ html {
     justify-content: center;
     align-items: center;
     gap: 20px;
-    padding-bottom: 30px;
 }
 
 .categories__card {
@@ -341,6 +340,19 @@ html {
 
 .JC-flexstart {
     justify-content: flex-start;
+}
+
+.footer {
+    display: flex;
+    justify-content: center;
+    color: beige;
+    padding-bottom: 20px;
+}
+
+.footer__link {
+    all: unset;
+    cursor: pointer;
+    color: #fff;
 }
 
 

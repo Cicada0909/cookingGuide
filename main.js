@@ -85,6 +85,16 @@ const init = async () => {
     })
 }
 
+const backToMenu = () => {
+    headerNavigation.classList.remove("JC-flexstart");
+    categoriesPage.classList.remove("hide");
+    dishes.classList.add("hide");
+    recipe.classList.add("hide");
+    search.classList.add("hide");
+    searchShow.classList.add("hide");
+    random.classList.add("hide");
+}
+
 const BackToSearching = () => {
     search.classList.remove("hide");
     searchShow.classList.add("hide");
@@ -364,11 +374,9 @@ const handleSelectRecipeSearching = async (e) => {
 }
 
 const handleHeaderButtonClick = async () => {
-
     const randomDish = await getRandomRecipe();
 
     ShowRandomRecipe(randomDish.meals[0])
-    
 }
 
 const searchDish = async (event) => {
@@ -390,16 +398,6 @@ const searchDish = async (event) => {
                 <h3 class="search__message-text">Your search for "${inputValue}" found:</h3>
             </div>
             `)
-}
-
-const backToMenu = () => {
-    headerNavigation.classList.remove("JC-flexstart");
-    categoriesPage.classList.remove("hide");
-    dishes.classList.add("hide");
-    recipe.classList.add("hide");
-    search.classList.add("hide");
-    searchShow.classList.add("hide");
-    random.classList.add("hide");
 }
 
 const observeCategories = () => {
