@@ -16,8 +16,7 @@
 
 Проект включает полностью кастомный дизайн, который был разработан мной с нуля.
 
-Просмотреть проект можно на GitHub Pages по ссылке:  
-https://cicada0909.github.io/cookingGuide
+Просмотреть проект можно на GitHub Pages по ссылке:  https://cicada0909.github.io/cookingGuide
 
 <h2 align="left">Цель создания проекта</h2>
 
