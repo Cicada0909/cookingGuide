@@ -85,6 +85,33 @@ const init = async () => {
     })
 }
 
+const BackToSearching = () => {
+    search.classList.remove("hide");
+    searchShow.classList.add("hide");
+    btnBackWrapper.innerHTML = "";
+}
+
+const insertBtnBackToMenu = () => {
+    btnBackWrapper.removeEventListener("click", backToMenu);
+    btnBackWrapper.innerHTML = "";
+
+    btnBackWrapper.insertAdjacentHTML("beforeend", `
+    <button class="back-btn">back</button>
+    `)
+
+    btnBackWrapper.addEventListener("click", backToMenu);
+}
+
+const insertBtnBackToSearching = () => {
+    btnBackWrapper.innerHTML = "";
+
+    btnBackWrapper.insertAdjacentHTML("beforeend", `
+    <button class="back-btn">back</button>
+    `)
+
+    btnBackWrapper.addEventListener("click", BackToSearching);
+}
+
 const insertDishesCards = async (meals) => {
     categoriesPage.classList.add("hide");
     dishes.classList.remove("hide");
@@ -97,19 +124,33 @@ const insertDishesCards = async (meals) => {
             </div>`)
     })
 
-    btnBackWrapper.innerHTML = "";
-
-    btnBackWrapper.insertAdjacentHTML("beforeend", `
-        <button class="back-btn">back</button>
-    `)
-
-    btnBackWrapper.addEventListener("click", backToMenu);
+    insertBtnBackToMenu()
 }
 
 const ShowRecipe = async (dish) => {
     categoriesPage.classList.add("hide");
     dishes.classList.add("hide");
     recipe.classList.remove("hide");
+
+    btnBackWrapper.innerHTML = "";
+
+    btnBackWrapper.insertAdjacentHTML("beforeend", `
+        <button class="back-btn">back</button>
+    `)
+
+    const backToDishesCards = () => {
+        recipe.classList.add("hide");
+        dishes.classList.remove("hide");
+        categoriesPage.classList.add("hide");
+        btnBackWrapper.removeEventListener("click", backToDishesCards);
+        
+        insertBtnBackToMenu()
+    }
+
+    btnBackWrapper.removeEventListener("click", backToMenu);
+    btnBackWrapper.removeEventListener("click", BackToSearching);
+    btnBackWrapper.addEventListener("click", backToDishesCards);
+
 
     recipe.insertAdjacentHTML("beforeend", `
         <div class="recipe__content">
@@ -187,6 +228,8 @@ const ShowRecipeSearching = async (dish) => {
 
     searchShow.innerHTML = "";
 
+    insertBtnBackToSearching();
+
     searchShow.insertAdjacentHTML("beforeend", `
         <div class="recipe__content">
                 <img src="${dish.strMealThumb}" alt="${dish.strMeal}" class="recipe__img">
@@ -236,6 +279,8 @@ const ShowRandomRecipe = async (dish) => {
     search.classList.add("hide");
     searchShow.classList.add("hide");
     random.classList.remove("hide");
+
+    btnBackWrapper.innerHTML = "";
 
     random.innerHTML = "";
 
@@ -326,6 +371,7 @@ const handleHeaderButtonClick = async () => {
 
 const searchDish = async (event) => {
     event.preventDefault()
+    btnBackWrapper.innerHTML = "";
     const inputValue = headerInput.value;
     if (inputValue == "") {
         return

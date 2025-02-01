@@ -201,7 +201,11 @@ html {
     filter: brightness(90%);
 }
 
-.dishes__card:hover {
+.search__card:hover .search__card-img {
+    filter: brightness(90%);
+}
+
+.dishes__card:hover, .search__card:hover {
     transform: scale(1.05);
 }
 
@@ -333,6 +337,10 @@ html {
     display: flex;
     justify-content: space-between;
     padding-bottom: 20px;
+}
+
+.JC-flexstart {
+    justify-content: flex-start;
 }
 
 
