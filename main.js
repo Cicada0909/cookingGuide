@@ -102,19 +102,31 @@ const insertBtnBackToMenu = () => {
     btnBackWrapper.addEventListener("click", backToMenu);
 }
 
+const backToDishesCards = () => {
+    recipe.classList.add("hide");
+    dishes.classList.remove("hide");
+    categoriesPage.classList.add("hide");
+    btnBackWrapper.removeEventListener("click", backToDishesCards);
+    
+    insertBtnBackToMenu()
+}
+
 const insertBtnBackToSearching = () => {
     btnBackWrapper.innerHTML = "";
 
     btnBackWrapper.insertAdjacentHTML("beforeend", `
     <button class="back-btn">back</button>
     `)
-
+    
+    btnBackWrapper.removeEventListener("click", backToDishesCards);
     btnBackWrapper.addEventListener("click", BackToSearching);
 }
 
 const insertDishesCards = async (meals) => {
     categoriesPage.classList.add("hide");
     dishes.classList.remove("hide");
+
+    dishes.innerHTML = "";
 
     meals.forEach((meals) => {
         dishes.insertAdjacentHTML("beforeend", `
@@ -132,20 +144,12 @@ const ShowRecipe = async (dish) => {
     dishes.classList.add("hide");
     recipe.classList.remove("hide");
 
+    recipe.innerHTML = "";
     btnBackWrapper.innerHTML = "";
 
     btnBackWrapper.insertAdjacentHTML("beforeend", `
         <button class="back-btn">back</button>
     `)
-
-    const backToDishesCards = () => {
-        recipe.classList.add("hide");
-        dishes.classList.remove("hide");
-        categoriesPage.classList.add("hide");
-        btnBackWrapper.removeEventListener("click", backToDishesCards);
-        
-        insertBtnBackToMenu()
-    }
 
     btnBackWrapper.removeEventListener("click", backToMenu);
     btnBackWrapper.removeEventListener("click", BackToSearching);
@@ -279,6 +283,7 @@ const ShowRandomRecipe = async (dish) => {
     search.classList.add("hide");
     searchShow.classList.add("hide");
     random.classList.remove("hide");
+    headerNavigation.classList.add("JC-flexstart");
 
     btnBackWrapper.innerHTML = "";
 
@@ -326,14 +331,11 @@ const ShowRandomRecipe = async (dish) => {
     })
 }
 
-
-
 const handleSelectCategory = async (e) => {
     const card = e.target.closest(".categories__card");
     if (card) {
         const categoryName = card.dataset.category;
         const dishes = await getDishesByCategoryName(categoryName);
-        console.log(dishes.meals);
         
         insertDishesCards(dishes.meals);
     }
@@ -372,13 +374,17 @@ const handleHeaderButtonClick = async () => {
 const searchDish = async (event) => {
     event.preventDefault()
     btnBackWrapper.innerHTML = "";
+
+    btnBackWrapper.removeEventListener("click", backToMenu);
+    headerNavigation.classList.remove("JC-flexstart");
+    
     const inputValue = headerInput.value;
     if (inputValue == "") {
         return
     }
     const dishes = await getItem(inputValue);
-    console.log(dishes.meals);
     insertSearchDishes(dishes.meals);
+
     search.insertAdjacentHTML("afterbegin", `
             <div class="search__message">
                 <h3 class="search__message-text">Your search for "${inputValue}" found:</h3>
@@ -387,6 +393,7 @@ const searchDish = async (event) => {
 }
 
 const backToMenu = () => {
+    headerNavigation.classList.remove("JC-flexstart");
     categoriesPage.classList.remove("hide");
     dishes.classList.add("hide");
     recipe.classList.add("hide");
@@ -420,9 +427,3 @@ btnRandom.addEventListener("click", handleHeaderButtonClick);
 menuBtn.addEventListener("click", backToMenu);
 
 headerLogo.addEventListener("click", backToMenu);
-
-// document.body.addEventListener("click", (event) => {
-//     if (event.target.matches(".btn-random")) {
-//         handleHeaderButtonClick();
-//     }
-// });
