@@ -97,12 +97,17 @@ const backToMenu = () => {
     changePage(search, categoriesPage);
     changePage(searchShow, categoriesPage);
     changePage(random, categoriesPage);
+
+    recipe.innerHTML = "";
+    searchShow.innerHTML = "";
+    random.innerHTML = "";
 }
 
 const BackToSearching = () => {
     changePage(searchShow, search);
 
     btnBackWrapper.innerHTML = "";
+    searchShow.innerHTML = "";
 }
 
 const insertBtnBackToMenu = () => {
@@ -118,6 +123,8 @@ const insertBtnBackToMenu = () => {
 
 const backToDishesCards = () => {
     changePage(recipe, dishes);
+    recipe.innerHTML = "";
+    searchShow.innerHTML = "";
     
     btnBackWrapper.removeEventListener("click", backToDishesCards);
     
@@ -223,6 +230,12 @@ const ShowRecipe = async (dish) => {
 
 const insertSearchDishes = async (items) => {
     search.innerHTML = "";
+    random.innerHTML = "";
+
+    setTimeout(() => {
+        recipe.innerHTML = "";
+        searchShow.innerHTML = "";
+    }, 400);
 
     changePage(categoriesPage, search);
     changePage(dishes, search);
@@ -305,14 +318,17 @@ const ShowRandomRecipe = async (dish) => {
     changePage(searchShow, random);
     changePage(categoriesPage, random);
 
-    headerNavigation.classList.add("JC-flexstart");
+    recipe.innerHTML = "";
+    searchShow.innerHTML = "";
 
-    btnBackWrapper.innerHTML = "";
+    setTimeout(() => {
+        headerNavigation.classList.add("JC-flexstart");
 
-    random.innerHTML = "";
-
-    random.insertAdjacentHTML("beforeend", `
-        <div class="recipe__content">
+        btnBackWrapper.innerHTML = "";
+    
+        random.innerHTML = "";
+        random.insertAdjacentHTML("beforeend", `
+            <div class="recipe__content">
                 <img src="${dish.strMealThumb}" alt="${dish.strMeal}" class="recipe__img">
                 <div class="recipe_details">
                     <h3 class="recipe__title">${dish.strMeal}</h3>
@@ -329,28 +345,29 @@ const ShowRandomRecipe = async (dish) => {
             <div class="recipe__video">
                 <iframe class ="recipe__youtube" src="https://www.youtube.com/embed/${dish.strYoutube.split('v=')[1]}" frameborder="0"></iframe>
             </div>
-    `);
-
-    const recipeIngredientsNameRandom = document.querySelector(".recipe__ingredients-name-random");
-    const recipeIngredientsMeasureRandom = document.querySelector(".recipe__ingredients-measure-random");
-
-    let ingredients = [];
-
-    for (let i = 1; i <= 20; i++) {
-        const ingredient = dish[`strIngredient${i}`];
-        const measure = dish[`strMeasure${i}`];
+        `);
     
-        if (ingredient && measure) {
-            ingredients.push({ingredient, measure});
+        const recipeIngredientsNameRandom = document.querySelector(".recipe__ingredients-name-random");
+        const recipeIngredientsMeasureRandom = document.querySelector(".recipe__ingredients-measure-random");
+    
+        let ingredients = [];
+    
+        for (let i = 1; i <= 20; i++) {
+            const ingredient = dish[`strIngredient${i}`];
+            const measure = dish[`strMeasure${i}`];
+        
+            if (ingredient && measure) {
+                ingredients.push({ingredient, measure});
+            }
         }
-    }
-
-    ingredients.forEach((ingredient) => {
-        recipeIngredientsNameRandom.insertAdjacentHTML("beforeend", `
-            <li>${ingredient.ingredient}</li>`)
+    
+        ingredients.forEach((ingredient) => {
+            recipeIngredientsNameRandom.insertAdjacentHTML("beforeend", `
+                <li>${ingredient.ingredient}</li>`);
             recipeIngredientsMeasureRandom.insertAdjacentHTML("beforeend", `
-            <li>${ingredient.measure}</li>`)
-    })
+                <li>${ingredient.measure}</li>`);
+        });
+    }, 400);
 }
 
 const handleSelectCategory = async (e) => {
