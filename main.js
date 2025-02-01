@@ -243,23 +243,25 @@ const insertSearchDishes = async (items) => {
     changePage(searchShow, search);
     changePage(random, search);
 
-    search.insertAdjacentHTML("beforeend", `
-        <div class="search__items">
-                    
+    setTimeout(() => {
+        search.insertAdjacentHTML("beforeend", `
+            <div class="search__items">
             </div>
-        `)
-
-    const searchItems = document.querySelector(".search__items");
-
-    items.forEach((items) => {
-        searchItems.insertAdjacentHTML("beforeend", `
-            <div class="search__card" data-product-id=${items.idMeal}>
-                <img class="search__card-img" src="${items.strMealThumb}" alt="${items.strMeal}">
-                <h3 class="search__card-title">${items.strMeal}</h3>
-            </div>`)
-    })
-
-    headerInput.value = '';
+        `);
+    
+        const searchItems = document.querySelector(".search__items");
+    
+        items.forEach((item) => {
+            searchItems.insertAdjacentHTML("beforeend", `
+                <div class="search__card" data-product-id=${item.idMeal}>
+                    <img class="search__card-img" src="${item.strMealThumb}" alt="${item.strMeal}">
+                    <h3 class="search__card-title">${item.strMeal}</h3>
+                </div>
+            `);
+        });
+    
+        headerInput.value = '';
+    }, 400);
 }
 
 const ShowRecipeSearching = async (dish) => {
@@ -418,7 +420,7 @@ const searchDish = async (event) => {
 
     btnBackWrapper.removeEventListener("click", backToMenu);
     headerNavigation.classList.remove("JC-flexstart");
-    
+
     const dishes = await getItem(inputValue);
     insertSearchDishes(dishes.meals);
 
