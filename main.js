@@ -410,15 +410,16 @@ const handleHeaderButtonClick = async () => {
 
 const searchDish = async (event) => {
     event.preventDefault()
+
+    if (inputValue == "") {
+        return
+    }
     btnBackWrapper.innerHTML = "";
 
     btnBackWrapper.removeEventListener("click", backToMenu);
     headerNavigation.classList.remove("JC-flexstart");
     
     const inputValue = headerInput.value;
-    if (inputValue == "") {
-        return
-    }
     const dishes = await getItem(inputValue);
     insertSearchDishes(dishes.meals);
 
