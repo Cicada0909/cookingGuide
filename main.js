@@ -245,6 +245,8 @@ const insertSearchDishes = async (items) => {
                 <h3 class="search__card-title">${items.strMeal}</h3>
             </div>`)
     })
+
+    headerInput.value = '';
 }
 
 const ShowRecipeSearching = async (dish) => {
