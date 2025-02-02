@@ -372,13 +372,23 @@ const ShowRandomRecipe = async (dish) => {
     }, 400);
 }
 
+let isLoadingCategory = false
+
 const handleSelectCategory = async (e) => {
+    if (isLoadingCategory) return
+
+    isLoadingCategory = true
     const card = e.target.closest(".categories__card");
     if (card) {
         const categoryName = card.dataset.category;
-        const dishes = await getDishesByCategoryName(categoryName);
-        
-        insertDishesCards(dishes.meals);
+
+        await getDishesByCategoryName(categoryName)
+            .then(({meals}) => {
+                insertDishesCards(meals)     
+            })
+            .finally(() => {
+                isLoadingCategory = false
+            })
     }
 }
 
