@@ -9,6 +9,7 @@ const headerInput = document.querySelector(".header__input");
 const searchShow = document.querySelector(".search-show");
 const random = document.querySelector(".random");
 const btnRandom = document.querySelector(".btn-random");
+const btnDesctop = document.querySelector(".btn-desctop");
 const menuBtn = document.querySelector(".menu-btn");
 const headerNavigation = document.querySelector(".header-navigation");
 const headerLogo = document.querySelector(".header__logo");
@@ -49,16 +50,22 @@ const getRecipeByDishesID = async (dishID) => {
         }
 }
 
+let isLoading = false
+
 const getItem = async (dish) => {
     try {
+        isLoading = true
+
         const res = await fetch(`${SERVER_URL}/api/json/v1/1/search.php?s=${dish}`);
         
         const data = await res.json();
 
         return data;
     } catch (error) {
-            console.log(error);
-        }
+        console.log(error);
+    } finally {
+        isLoading = false
+    }
 }
 
 const getRandomRecipe = async (dish) => {
@@ -373,12 +380,20 @@ const ShowRandomRecipe = async (dish) => {
 }
 
 const handleSelectCategory = async (e) => {
-    const card = e.target.closest(".categories__card");
+    try {
+        if (isLoading) return
+
+        isLoading = true
+
+        const card = e.target.closest(".categories__card");
     if (card) {
         const categoryName = card.dataset.category;
         const dishes = await getDishesByCategoryName(categoryName);
         
         insertDishesCards(dishes.meals);
+    }
+    } finally {
+        isLoading = false   
     }
 }
 
@@ -452,6 +467,8 @@ search.addEventListener("click", handleSelectRecipeSearching);
 headerForm.addEventListener("submit", searchDish);
 
 btnRandom.addEventListener("click", handleHeaderButtonClick);
+
+btnDesctop.addEventListener("click", handleHeaderButtonClick);
 
 menuBtn.addEventListener("click", backToMenu);
 
