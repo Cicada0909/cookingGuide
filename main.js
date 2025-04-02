@@ -97,12 +97,12 @@ const backToMenu = () => {
         return;
     }
 
+    headerNavigation.classList.remove("JC-flexstart");
+    categoriesPage.classList.remove("hide");
+
     if ("vibrate" in navigator) {
         navigator.vibrate(200);
     }
-    
-    headerNavigation.classList.remove("JC-flexstart");
-    categoriesPage.classList.remove("hide");
     
     changePage(dishes, categoriesPage);
     changePage(recipe, categoriesPage);

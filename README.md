@@ -1,7 +1,7 @@
 <h1 align="center">Cooking Guide</h1>
 
 <p align="center">
-<img src="./title.png" title="Cooking Guide" width="726px" height="443px">
+<img src="./title.png" title="Cooking Guide" max-width="726px" max-height="443px">
 </p>
 
 <h2 align="left">Описание проекта</h2>
