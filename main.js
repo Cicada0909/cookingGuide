@@ -96,6 +96,11 @@ const backToMenu = () => {
     if (!categoriesPage.classList.contains('hide')) {
         return;
     }
+
+    if ("vibrate" in navigator) {
+        navigator.vibrate(200);
+    }
+    
     headerNavigation.classList.remove("JC-flexstart");
     categoriesPage.classList.remove("hide");
     
