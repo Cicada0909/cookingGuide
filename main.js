@@ -99,10 +99,6 @@ const backToMenu = () => {
 
     headerNavigation.classList.remove("JC-flexstart");
     categoriesPage.classList.remove("hide");
-
-    if ("vibrate" in navigator) {
-        navigator.vibrate(200);
-    }
     
     changePage(dishes, categoriesPage);
     changePage(recipe, categoriesPage);
@@ -386,19 +382,23 @@ const ShowRandomRecipe = async (dish) => {
 
 const handleSelectCategory = async (e) => {
     try {
-        if (isLoading) return
+        if (isLoading) return;
 
-        isLoading = true
+        isLoading = true;
 
         const card = e.target.closest(".categories__card");
-    if (card) {
-        const categoryName = card.dataset.category;
-        const dishes = await getDishesByCategoryName(categoryName);
-        
-        insertDishesCards(dishes.meals);
-    }
+        if (card) {
+            if (window.Telegram?.WebApp?.HapticFeedback) {
+                Telegram.WebApp.HapticFeedback.impactOccurred("medium");
+            }
+
+            const categoryName = card.dataset.category;
+            const dishes = await getDishesByCategoryName(categoryName);
+            
+            insertDishesCards(dishes.meals);
+        }
     } finally {
-        isLoading = false   
+        isLoading = false;   
     }
 }
 
