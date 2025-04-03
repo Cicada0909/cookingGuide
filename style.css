@@ -7,10 +7,6 @@
   font-weight: 600;
 }
 
-body {
-  touch-action: none !important;
-}
-
 button {
   all: unset;
   cursor: pointer;
