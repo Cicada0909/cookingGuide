@@ -16,12 +16,12 @@ const headerLogo = document.querySelector(".header__logo");
 const btnBackWrapper = document.querySelector(".btn-back-wrapper");
 
 
-window.addEventListener('DOMContentLoaded', (event) => {
-    if (window.Telegram && window.Telegram.WebApp) {
-      window.Telegram.WebApp.disableVerticalSwipes();
-      window.Telegram.WebApp.ready();
-    }
-  });
+// window.addEventListener('DOMContentLoaded', (event) => {
+//     if (window.Telegram && window.Telegram.WebApp) {
+//       window.Telegram.WebApp.disableVerticalSwipes();
+//       window.Telegram.WebApp.ready();
+//     }
+//   });
 
 
 const getCategories = async () => {
